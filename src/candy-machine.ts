@@ -5,6 +5,7 @@ import {
   TOKEN_PROGRAM_ID,
   Token,
 } from "@solana/spl-token";
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 export const CANDY_MACHINE_PROGRAM = new anchor.web3.PublicKey(
   "cndyAnrLdpjq1Ssp1z8xxDsB8dxe7u4HL5Nxi2K5WXZ"
@@ -30,6 +31,7 @@ interface CandyMachineState {
   itemsRedeemed: number;
   itemsRemaining: number;
   goLiveDate: Date,
+  price: number,
 }
 
 export const awaitTransactionSignatureConfirmation = async (
@@ -181,11 +183,14 @@ export const getCandyMachineState = async (
   let goLiveDate = state.data.goLiveDate.toNumber();
   goLiveDate = new Date(goLiveDate * 1000);
 
+  const price = state.data.price.toNumber() / LAMPORTS_PER_SOL;
+
   console.log({
     itemsAvailable,
     itemsRedeemed,
     itemsRemaining,
     goLiveDate,
+    price,
   })
 
   return {
@@ -194,6 +199,7 @@ export const getCandyMachineState = async (
     itemsRedeemed,
     itemsRemaining,
     goLiveDate,
+    price,
   };
 }
 

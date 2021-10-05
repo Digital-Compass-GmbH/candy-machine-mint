@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Countdown from "react-countdown";
-import { Button, CircularProgress, Snackbar } from "@material-ui/core";
+import { Box, Button, CircularProgress, Container, Snackbar } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 
 import * as anchor from "@project-serum/anchor";
@@ -18,14 +18,28 @@ import {
   mintOneToken,
   shortenAddress,
 } from "./candy-machine";
+import Header from "./Header";
+import Stats from "./Stats";
 
 const ConnectButton = styled(WalletDialogButton)``;
 
 const CounterText = styled.span``; // add your styles here
 
-const MintContainer = styled.div``; // add your styles here
+const MintContainer = styled(Box)`
+display: flex;
+justify-content: center;
+align-items: center;
+`;
 
-const MintButton = styled(Button)``; // add your styles here
+const MintButton = styled(Button)`
+color:#ffffff!important;
+background-color: #31211C!important;
+`;
+
+const HomeContainer = styled(Container)`
+min-height: calc(100vh - 50px);
+`;
+
 
 export interface HomeProps {
   candyMachineId: anchor.web3.PublicKey;
@@ -45,6 +59,7 @@ const Home = (props: HomeProps) => {
   const [itemsAvailable, setItemsAvailable] = useState(0);
   const [itemsRedeemed, setItemsRedeemed] = useState(0);
   const [itemsRemaining, setItemsRemaining] = useState(0);
+  const [price, setPrice] = useState(0);
 
   const [alertState, setAlertState] = useState<AlertState>({
     open: false,
@@ -67,6 +82,7 @@ const Home = (props: HomeProps) => {
         itemsAvailable,
         itemsRemaining,
         itemsRedeemed,
+        price,
       } = await getCandyMachineState(
         wallet as anchor.Wallet,
         props.candyMachineId,
@@ -80,6 +96,7 @@ const Home = (props: HomeProps) => {
       setIsSoldOut(itemsRemaining === 0);
       setStartDate(goLiveDate);
       setCandyMachine(candyMachine);
+      setPrice(price);
     })();
   };
 
@@ -166,18 +183,8 @@ const Home = (props: HomeProps) => {
   ]);
 
   return (
-    <main>
-      {wallet && (
-        <p>Wallet {shortenAddress(wallet.publicKey.toBase58() || "")}</p>
-      )}
-
-      {wallet && <p>Balance: {(balance || 0).toLocaleString()} SOL</p>}
-
-      {wallet && <p>Total Available: {itemsAvailable}</p>}
-
-      {wallet && <p>Redeemed: {itemsRedeemed}</p>}
-
-      {wallet && <p>Remaining: {itemsRemaining}</p>}
+    <HomeContainer maxWidth='lg'>
+      <Header />
 
       <MintContainer>
         {!wallet ? (
@@ -194,7 +201,7 @@ const Home = (props: HomeProps) => {
               isMinting ? (
                 <CircularProgress />
               ) : (
-                "MINT"
+                `MINT for ${price} SOL`
               )
             ) : (
               <Countdown
@@ -208,6 +215,16 @@ const Home = (props: HomeProps) => {
         )}
       </MintContainer>
 
+
+      {wallet && (<Stats
+        walletAdress={shortenAddress(wallet.publicKey.toBase58() || "")}
+        balance={(balance || 0).toLocaleString()}
+        currentBalance={0}
+        mintPrice={0}
+        total={itemsAvailable}
+        remaining={itemsRemaining}
+        redeemed={itemsRedeemed} />)}
+
       <Snackbar
         open={alertState.open}
         autoHideDuration={6000}
@@ -220,7 +237,7 @@ const Home = (props: HomeProps) => {
           {alertState.message}
         </Alert>
       </Snackbar>
-    </main>
+    </HomeContainer>
   );
 };
 

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   preserveAspectRatio="xMinYMin"
+   width="100%"
+   viewBox="0 0 289.39856 57.53236"
+   version="1.1"
+   id="svg7705"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs7702">
+    <rect
+       x="-2858.2278"
+       y="-1102.8322"
+       width="1400.9604"
+       height="239.32304"
+       id="rect10395" />
+  </defs>
+  <g
+     id="layer1"
+     transform="translate(95.87568,-71.15186)">
+    <path
+       id="path3109"
+       style="fill:#31211c;fill-opacity:1;stroke:none;stroke-width:1.03761;stroke-opacity:1"
+       d="m -79.26776,71.15235 -16.60792,28.76594 16.60792,28.76593 h 10.709 c -1.16651,-2.17449 -1.8762,-4.84922 -1.95265,-8.04739 l 0.0417,-0.003 c -0.20864,-3.26887 0.19665,-6.19626 0.55231,-7.76996 2.32352,-9.32872 8.2399,-14.66443 8.2399,-14.66443 l -1.02848,-2.22898 c 0,0 -6.77544,7.19874 -8.28859,5.83964 -1.51314,-1.35911 2.63232,-6.64778 2.63232,-6.64778 l 2.82813,-3.7706 -4.03997,-4.7138 c 0,0 -12.88858,21.08716 -14.8145,18.18102 -1.92591,-2.90614 6.33009,-13.87167 6.33009,-13.87167 0,0 6.90849,-7.86746 7.81095,-7.81095 1.27063,0.0796 3.7706,2.69381 3.7706,2.69381 l 2.55875,3.3669 c 0,0 8.58829,-11.08653 10.29395,-11.18224 v -3.7e-4 c 0.0272,-0.002 0.0525,-7e-4 0.0761,0.004 1.50683,0.26285 4.19055,15.58901 4.35841,17.07897 0,0 10.38601,2.67468 13.1843,16.14529 l 6.5614,-11.36487 -16.60792,-28.76595 z m 25.49494,10.81441 c 0,0 -4.72063,8.34293 -7.14665,11.57386 l 1.89774,3.22525 c 0,0 3.57261,-2.1513 6.51383,-1.77074 z" />
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,740.06366,361.73535)"
+       id="text10393"
+       style="font-style:normal;font-weight:normal;font-size:192px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect10395);fill:#31211c;fill-opacity:1;stroke:none"><tspan
+         x="-2858.2285"
+         y="-927.66461"
+         id="tspan1003"><tspan
+           style="font-family:'Architects Daughter'"
+           id="tspan1001">BuzzClub</tspan></tspan></text>
+  </g>
+</svg>

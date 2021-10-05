@@ -1,3 +1,9 @@
 .App {
   text-align: center;
 }
+
+body {
+  color: rgba(0, 0, 0, 0.87);
+  background-color: #ffe16f;
+  font-size: 1rem;
+}
