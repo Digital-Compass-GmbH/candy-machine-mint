@@ -1,5 +1,6 @@
 import "./App.css";
 import { useMemo } from "react";
+import ReactGA from "react-ga4";
 
 import Home from "./Home";
 
@@ -75,6 +76,7 @@ const theme = createTheme({
 });
 
 const App = () => {
+  ReactGA.initialize("G-RZD7W8FE7S");
   const endpoint = useMemo(() => clusterApiUrl(network), []);
 
   const wallets = useMemo(
@@ -89,19 +91,18 @@ const App = () => {
   );
 
   return (
-    <ThemeProvider theme={theme}>
-      <ConnectionProvider endpoint={endpoint}>
-        <WalletProvider wallets={wallets} autoConnect={true}>
+    <ThemeProvider theme={ theme }>
+      <ConnectionProvider endpoint={ endpoint }>
+        <WalletProvider wallets={ wallets } autoConnect={ true }>
           <WalletDialogProvider>
             <Home
-              candyMachineId={candyMachineId}
-              config={config}
-              connection={connection}
-              startDate={startDateSeed}
-              treasury={treasury}
-              txTimeout={txTimeout}
+              candyMachineId={ candyMachineId }
+              config={ config }
+              connection={ connection }
+              startDate={ startDateSeed }
+              treasury={ treasury }
+              txTimeout={ txTimeout }
             />
-
             <Footer />
           </WalletDialogProvider>
         </WalletProvider>

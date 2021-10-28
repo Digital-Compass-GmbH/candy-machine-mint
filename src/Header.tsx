@@ -13,7 +13,7 @@ const Header = () => {
   return (
     <HeaderContainer>
       <Container maxWidth='sm'>
-        <img src={logoIcon} style={{ width: '100%' }} alt='logo' />
+        <img src={ logoIcon } style={ { width: '100%', height: 'auto' } } alt='logo' />
       </Container>
       <h3>Welcome to the official minting event of the BuzzClubNFT community!</h3>
       <h3>Are you ready to adopt a real bee?</h3>

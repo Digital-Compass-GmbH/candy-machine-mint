@@ -23,6 +23,7 @@
     "react": "^17.0.2",
     "react-countdown": "^2.3.2",
     "react-dom": "^17.0.2",
+    "react-ga4": "^1.1.1",
     "react-scripts": "4.0.3",
     "styled-components": "^5.3.1",
     "typescript": "^4.1.2",
@@ -30,7 +31,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build",
+    "deploy": "aws s3 sync build/ s3://mint-area.buzzclubnft.com --delete",
+    "postdeploy": "aws s3 cp s3://mint-area.buzzclubnft.com/ s3://mint-area.buzzclubnft.com/ --exclude \"*.html\" --recursive --expires 2034-01-01T00:00:00Z --cache-control max-age=31536000",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import Countdown from "react-countdown";
 import { Box, Button, CircularProgress, Container, Snackbar } from "@material-ui/core";
@@ -20,6 +20,7 @@ import {
 } from "./candy-machine";
 import Header from "./Header";
 import Stats from "./Stats";
+import ReactGA from "react-ga4";
 
 const ConnectButton = styled(WalletDialogButton)``;
 
@@ -52,9 +53,15 @@ export interface HomeProps {
 
 const Home = (props: HomeProps) => {
   const [balance, setBalance] = useState<number>();
-  const [isActive, setIsActive] = useState(false); // true when countdown completes
   const [isSoldOut, setIsSoldOut] = useState(false); // true when items remaining is zero
   const [isMinting, setIsMinting] = useState(false); // true when user got to press MINT
+
+  // compare start date and current date to decide display mint button or countdown
+  const [startDate, setStartDate] = useState(new Date(props.startDate));
+  const isLive = useMemo(() => {
+    console.log('Startdate over', startDate <= new Date(), startDate, new Date());
+    return startDate <= new Date();
+  }, [startDate]);
 
   const [itemsAvailable, setItemsAvailable] = useState(0);
   const [itemsRedeemed, setItemsRedeemed] = useState(0);
@@ -66,8 +73,6 @@ const Home = (props: HomeProps) => {
     message: "",
     severity: undefined,
   });
-
-  const [startDate, setStartDate] = useState(new Date(props.startDate));
 
   const wallet = useAnchorWallet();
   const [candyMachine, setCandyMachine] = useState<CandyMachine>();
@@ -94,13 +99,17 @@ const Home = (props: HomeProps) => {
       setItemsRedeemed(itemsRedeemed);
 
       setIsSoldOut(itemsRemaining === 0);
-      setStartDate(goLiveDate);
       setCandyMachine(candyMachine);
       setPrice(price);
+
+      setTimeout(function () {
+        setStartDate(goLiveDate);
+      }, 1200);
     })();
   };
 
   const onMint = async () => {
+    ReactGA.event('mint_button_click',)
     try {
       setIsMinting(true);
       if (wallet && candyMachine?.program) {
@@ -179,7 +188,7 @@ const Home = (props: HomeProps) => {
   useEffect(refreshCandyMachineState, [
     wallet,
     props.candyMachineId,
-    props.connection,
+    props.connection
   ]);
 
   return (
@@ -187,17 +196,17 @@ const Home = (props: HomeProps) => {
       <Header />
 
       <MintContainer>
-        {!wallet ? (
+        { !wallet ? (
           <ConnectButton>Connect Wallet</ConnectButton>
         ) : (
           <MintButton
-            disabled={isSoldOut || isMinting || !isActive}
-            onClick={onMint}
+            disabled={ isSoldOut || isMinting || !isLive }
+            onClick={ onMint }
             variant="contained"
           >
-            {isSoldOut ? (
+            { isSoldOut ? (
               "SOLD OUT"
-            ) : isActive ? (
+            ) : isLive ? (
               isMinting ? (
                 <CircularProgress />
               ) : (
@@ -205,36 +214,35 @@ const Home = (props: HomeProps) => {
               )
             ) : (
               <Countdown
-                date={startDate}
-                onMount={({ completed }) => completed && setIsActive(true)}
-                onComplete={() => setIsActive(true)}
-                renderer={renderCounter}
+                date={ startDate }
+                onComplete={ () => refreshCandyMachineState() }
+                renderer={ renderCounter }
               />
-            )}
+            ) }
           </MintButton>
-        )}
+        ) }
       </MintContainer>
 
 
-      {wallet && (<Stats
-        walletAdress={shortenAddress(wallet.publicKey.toBase58() || "")}
-        balance={(balance || 0).toLocaleString()}
-        currentBalance={0}
-        mintPrice={0}
-        total={itemsAvailable}
-        remaining={itemsRemaining}
-        redeemed={itemsRedeemed} />)}
+      { wallet && (<Stats
+        walletAdress={ shortenAddress(wallet.publicKey.toBase58() || "") }
+        balance={ (balance || 0).toLocaleString() }
+        currentBalance={ 0 }
+        mintPrice={ 0 }
+        total={ itemsAvailable }
+        remaining={ itemsRemaining }
+        redeemed={ itemsRedeemed } />) }
 
       <Snackbar
-        open={alertState.open}
-        autoHideDuration={6000}
-        onClose={() => setAlertState({ ...alertState, open: false })}
+        open={ alertState.open }
+        autoHideDuration={ 6000 }
+        onClose={ () => setAlertState({ ...alertState, open: false }) }
       >
         <Alert
-          onClose={() => setAlertState({ ...alertState, open: false })}
-          severity={alertState.severity}
+          onClose={ () => setAlertState({ ...alertState, open: false }) }
+          severity={ alertState.severity }
         >
-          {alertState.message}
+          { alertState.message }
         </Alert>
       </Snackbar>
     </HomeContainer>
@@ -250,7 +258,7 @@ interface AlertState {
 const renderCounter = ({ days, hours, minutes, seconds, completed }: any) => {
   return (
     <CounterText>
-      {hours + (days || 0) * 24} hours, {minutes} minutes, {seconds} seconds
+      { hours + (days || 0) * 24 } hours, { minutes } minutes, { seconds } seconds
     </CounterText>
   );
 };
